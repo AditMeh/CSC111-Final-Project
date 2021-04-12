@@ -13,9 +13,9 @@ class Gui:
         self.previous_search = ""
 
         # Creating data-based variables
-        df = read_data()
-        self.decision_tree = create_decision_tree(df)
-        self.pokemon_to_stats = generate_pokemon_to_stats_mapping(df)
+        self.df = read_data()
+        self.decision_tree = create_decision_tree(self.df)
+        self.pokemon_to_stats = generate_pokemon_to_stats_mapping(self.df)
 
         layout = self.generate_layout()
         sg.theme('DarkAmber')
@@ -118,7 +118,8 @@ class Gui:
 
             temp_row.append(sg.ButtonMenu(self.query[i], size=(10, 20), key="pokemon: " + self.query[i],
                                           menu_def=['BLANK', ["Display Stats", "Add to party"]],
-                                          image_filename=filename))
+                                          image_filename=filename,
+                                          text_color="white"))
             if len(temp_row) == max_row or i == len(self.query) - 1:
                 grid.append(temp_row)
                 temp_row = []
