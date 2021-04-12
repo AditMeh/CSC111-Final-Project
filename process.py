@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from bst import BinarySearchTree
 import pprint
-from typing import List, Any
+from typing import List, Any, Optional
 from decision_tree import DecisionTree
 
 
@@ -112,3 +112,10 @@ def create_bst(names, stat_list) -> BinarySearchTree:
         new_bst.insert(item, pokemon=names[i])
 
     return new_bst
+
+
+def fetch_values(type_filter: Optional[str], stat: str, df):
+    if type_filter == "all":
+        return df.loc[:, stat]
+    else:
+        return mask_df(df, type_filter).loc[:, stat]

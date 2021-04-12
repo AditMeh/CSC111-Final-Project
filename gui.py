@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
-from typing import List, Optional
-from process import read_data, create_decision_tree, generate_pokemon_to_stats_mapping
-import time
+from typing import List
+from process import read_data, create_decision_tree, generate_pokemon_to_stats_mapping, fetch_values
+import matplotlib.pyplot as plt
 
 sg.theme('DarkAmber')
 
@@ -29,13 +29,20 @@ class Gui:
 
             elif event == "submit":
                 query = values["-IN-"]
-                self.previous_search = query
-                self.query = self.decision_tree.evaluate(self.process_query())
-                layout = self.generate_layout()
+                if query == "":
+                    pass
+                elif query.split(" ")[0] == "plot":
+                    values = query.split(" ")
+                    self.draw_plot(values[2], values[1])
 
-                window_new = sg.Window('Pokemon recommender', layout, size=(600, 600))
-                window.close()
-                window = window_new
+                else:
+                    self.previous_search = query
+                    self.query = self.decision_tree.evaluate(self.process_query())
+                    layout = self.generate_layout()
+
+                    window_new = sg.Window('Pokemon recommender', layout, size=(600, 600), finalize=True)
+                    window.close()
+                    window = window_new
 
             elif event.split(" ")[0] == "pokemon:":
                 name = " ".join(event.split(" ")[1:])
@@ -53,7 +60,7 @@ class Gui:
                     if self.add_to_party(name):
                         layout = self.generate_layout()
 
-                        window_new = sg.Window('Pokemon recommender', layout, size=(600, 600))
+                        window_new = sg.Window('Pokemon recommender', layout, size=(600, 600), finalize=True)
                         window.close()
                         window = window_new
 
@@ -65,7 +72,7 @@ class Gui:
 
                     # Regenerate window
                     layout = self.generate_layout()
-                    window_new = sg.Window('Pokemon recommender', layout, size=(600, 600))
+                    window_new = sg.Window('Pokemon recommender', layout, size=(600, 600), finalize=True)
                     window.close()
                     window = window_new
 
@@ -175,6 +182,16 @@ class Gui:
         type, stat, threshold = self.previous_search.split()
         threshold = int(threshold)
         return [type, stat, threshold]
+
+    def draw_plot(self, stat, typing):
+        plt.clf()
+        plt.cla()
+        plt.close()
+
+        lst = fetch_values(typing, stat, self.df)
+        plt.hist(lst, density=True, bins=30)
+        plt.show(block=False)
+
 
 
 Gui()
