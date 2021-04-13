@@ -33,9 +33,10 @@ class Gui:
                     pass
                 elif query.split(" ")[0] == "plot":
                     values = query.split(" ")
+                    self.previous_search = query
                     self.draw_plot(values[2], values[1])
 
-                else:
+                elif query.split(" ")[0] == "find":
                     self.previous_search = query
                     self.query = self.decision_tree.evaluate(self.process_query())
                     layout = self.generate_layout()
@@ -179,17 +180,22 @@ class Gui:
 
     def process_query(self):
         # perhaps more preprocessing code here
-        type, stat, threshold = self.previous_search.split()
-        threshold = int(threshold)
-        return [type, stat, threshold]
+        typing, degree, stat = self.previous_search.split()[1:]
+        conversion_key = degree + " " + stat
+        return [typing, stat, conversion_key]
 
     def draw_plot(self, stat, typing):
         plt.clf()
         plt.cla()
         plt.close()
 
+        plt.figure(num='Query: ' + self.previous_search)
         lst = fetch_values(typing, stat, self.df)
-        plt.hist(lst, density=True, bins=30)
+        plt.hist(lst, density=False, bins=30)
+        plt.title("A histogram of the " + stat + " of " + typing + " pokemon")
+        plt.xlabel(stat + " values")
+        plt.ylabel("Count")
+
         plt.show(block=False)
 
 

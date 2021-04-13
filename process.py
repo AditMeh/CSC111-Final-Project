@@ -6,41 +6,12 @@ from typing import List, Any, Optional
 from decision_tree import DecisionTree
 
 
-# print(np.percentile(attack, 25))
-# print(np.percentile(attack, 50))
-# print(np.percentile(attack, 75))
-# print("\n")
-#
-# print(np.percentile(defense, 25))
-# print(np.percentile(defense, 50))
-# print(np.percentile(defense, 75))
-# print("\n")
-#
-# print(np.percentile(sp_attack, 25))
-# print(np.percentile(sp_attack, 50))
-# print(np.percentile(sp_attack, 75))
-# print("\n")
-#
-# print(np.percentile(sp_defense, 25))
-# print(np.percentile(sp_defense, 50))
-# print(np.percentile(sp_defense, 75))
-# print("\n")
-#
-# print(np.percentile(speed, 20))
-# print(np.percentile(speed, 50))
-# print(np.percentile(speed, 75))
-#
-# print("\n")
-#
-# print(np.percentile(hp, 25))
-# print(np.percentile(hp, 50))
-# print(np.percentile(hp, 75))
 def read_data():
     df = pd.read_csv("data/pokemon.csv")
     return df
 
 
-def find_quantiles(df) -> dict[str, dict[str, Any]]:
+def find_quantiles(df) -> dict[str, float]:
     stat_to_quantiles = {}
     stats = ["attack", "defense", "speed", "sp_defense", "sp_attack", "hp"]
 
@@ -48,8 +19,8 @@ def find_quantiles(df) -> dict[str, dict[str, Any]]:
         stat_column = df.loc[:, stat].to_numpy()
 
         stat_to_quantiles["low " + stat] = np.percentile(stat_column, 25)
-        stat_to_quantiles["medium " + stat] = np.percentile(stat_column, 25)
-        stat_to_quantiles["high " + stat] = np.percentile(stat_column, 25)
+        stat_to_quantiles["medium " + stat] = np.percentile(stat_column, 50)
+        stat_to_quantiles["high " + stat] = np.percentile(stat_column, 75)
 
     return stat_to_quantiles
 
@@ -85,12 +56,14 @@ def create_decision_tree(df):
 
     types = np.unique(df.loc[:, "type1"].to_numpy())
 
+    conversion_dictionary = find_quantiles(df)
     for pokemon_type in types:
         type_tree = DecisionTree(category=pokemon_type, is_binary_parent=False)
         masked_df = mask_df(df, pokemon_type)
 
         for stat in stats:
-            stat_tree = DecisionTree(category=stat, is_binary_parent=True)
+            stat_tree = DecisionTree(category=stat, is_binary_parent=True,
+                                     conversion_dictionary=conversion_dictionary)
             stat_tree.add_subtree(create_bst(masked_df.loc[:, "name"], masked_df.loc[:, stat]))
             type_tree.add_subtree(stat_tree)
         base_tree.add_subtree(type_tree)
@@ -114,7 +87,7 @@ def create_bst(names, stat_list) -> BinarySearchTree:
     return new_bst
 
 
-def fetch_values(type_filter: Optional[str], stat: str, df):
+def fetch_values(type_filter: str, stat: str, df):
     if type_filter == "all":
         return df.loc[:, stat]
     else:
