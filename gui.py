@@ -1,21 +1,21 @@
 import PySimpleGUI as sg
 from typing import List
-from process import read_data, create_decision_tree, generate_pokemon_to_stats_mapping, fetch_values
+from process import fetch_values
 import matplotlib.pyplot as plt
 
 sg.theme('DarkAmber')
 
 
 class Gui:
-    def __init__(self):
+    def __init__(self, df, decision_tree, pokemon_to_stats):
         self.party = ["blank", "blank", "blank", "blank", "blank", "blank"]
         self.query = []
         self.previous_search = ""
 
         # Creating data-based variables
-        self.df = read_data()
-        self.decision_tree = create_decision_tree(self.df)
-        self.pokemon_to_stats = generate_pokemon_to_stats_mapping(self.df)
+        self.df = df
+        self.decision_tree = decision_tree
+        self.pokemon_to_stats = pokemon_to_stats
 
         layout = self.generate_layout()
         sg.theme('DarkAmber')
@@ -27,6 +27,8 @@ class Gui:
             if event == sg.WIN_CLOSED or event == 'Exit':
                 break
 
+            # elif values[event] == "No action":
+            #     pass
             elif event == "submit":
                 query = values["-IN-"]
                 if query == "":
@@ -191,13 +193,9 @@ class Gui:
 
         plt.figure(num='Query: ' + self.previous_search)
         lst = fetch_values(typing, stat, self.df)
-        plt.hist(lst, density=False, bins=30)
+        plt.hist(lst, density=False, bins=50)
         plt.title("A histogram of the " + stat + " of " + typing + " pokemon")
         plt.xlabel(stat + " values")
         plt.ylabel("Count")
 
         plt.show(block=False)
-
-
-
-Gui()

@@ -25,6 +25,4 @@ class DecisionTree:
                     return item.evaluate(query[1:])
         elif self._is_binary_parent:
             assert len(query) == 1
-            print(query)
-            print(self.conversion_dictionary[query[0]])
             return self.subtrees[0].find_greater_or_equal_nodes(self.conversion_dictionary[query[0]])
