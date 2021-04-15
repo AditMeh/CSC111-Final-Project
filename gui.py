@@ -8,7 +8,7 @@ This file is Copyright (c) 2021 Aditya Mehrotra.
 """
 
 import PySimpleGUI as sg
-from typing import List, Any
+from typing import List, Any, Dict
 from process import fetch_values
 from decision_tree import DecisionTree
 import matplotlib.pyplot as plt
@@ -72,7 +72,7 @@ class Gui:
         - len(self.party) == 6
     """
 
-    def __init__(self, df, decision_tree: DecisionTree, pokemon_to_stats: dict[Any, dict[str, Any]]) -> None:
+    def __init__(self, df, decision_tree: DecisionTree, pokemon_to_stats: Dict[Any, Dict[str, Any]]) -> None:
         """
         This function initializes the necessary datatypes for generating and
         rendering the BST with the query functions.

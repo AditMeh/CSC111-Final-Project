@@ -8,7 +8,7 @@ This file is Copyright (c) 2021 Aditya Mehrotra.
 """
 from __future__ import annotations
 
-from typing import Union, Optional, List
+from typing import Union, Optional, List, Dict
 from bst import BinarySearchTree
 import pprint
 
@@ -34,10 +34,10 @@ class DecisionTree:
     subtrees: List[Union[BinarySearchTree, DecisionTree]]
     category: str
     _is_binary_parent: bool
-    conversion_dictionary: dict[str, tuple[Optional[float], Optional[float]]]
+    conversion_dictionary: Dict[str, tuple[Optional[float], Optional[float]]]
 
     def __init__(self, category: Optional[str], is_binary_parent: bool,
-                 conversion_dictionary: dict[str, tuple[Optional[float], Optional[float]]]) -> None:
+                 conversion_dictionary: Dict[str, tuple[Optional[float], Optional[float]]]) -> None:
         self.subtrees = []
         self.category = category
         self._is_binary_parent = is_binary_parent

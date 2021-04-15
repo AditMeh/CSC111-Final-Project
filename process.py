@@ -12,7 +12,7 @@ import pprint
 import pandas as pd
 import numpy as np
 from bst import BinarySearchTree
-from typing import List, Any, Optional, Tuple
+from typing import List, Any, Optional, Tuple, Dict
 from decision_tree import DecisionTree
 
 
@@ -28,7 +28,7 @@ def read_data():
     return df
 
 
-def find_quantiles(df) -> dict[str, Tuple[Optional[float], Optional[float]]]:
+def find_quantiles(df) -> Dict[str, Tuple[Optional[float], Optional[float]]]:
     """
     This function generates a dictionary which maps
     degrees into tuples in the form (Lower bound, Upper bound)
@@ -53,7 +53,7 @@ def find_quantiles(df) -> dict[str, Tuple[Optional[float], Optional[float]]]:
     return stat_to_quantiles
 
 
-def generate_pokemon_to_stats_mapping(df) -> dict[Any, dict[str, Any]]:
+def generate_pokemon_to_stats_mapping(df) -> Dict[Any, Dict[str, Any]]:
     """
     Generates a dictionary which maps a pokemon's name
     to a dictionary which maps stat names to their values.
