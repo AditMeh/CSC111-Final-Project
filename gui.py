@@ -241,7 +241,7 @@ class Gui:
         temp_row = []
         for i in range(len(self.query)):
             filename = "generation-viii/icons/" + str(self.pokemon_to_stats[self.query[i]]["pokedex_id"]) \
-                       + ".png "
+                       + ".png"
 
             temp_row.append(sg.ButtonMenu(self.query[i], size=(10, 20), key="pokemon: " + self.query[i],
                                           menu_def=['BLANK', ["Display Stats", "Add to party"]],
@@ -266,7 +266,7 @@ class Gui:
         for i in range(len(self.party)):
             if self.party[i] != "blank":
                 filename = "generation-viii/icons/" + str(self.pokemon_to_stats[self.party[i]]["pokedex_id"]) \
-                           + ".png "
+                           + ".png"
 
                 party_grid.append(sg.ButtonMenu(self.party[i], size=(10, 5), key="party: " + self.party[i],
                                                 menu_def=['BLANK', ["Display stats", "Remove from party"]],
