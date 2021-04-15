@@ -125,7 +125,8 @@ class Gui:
 
                 # CASE: the query is invalid, then create popup
                 if query == "" or not check_query(q=query):
-                    sg.popup("Malformed query. Please follow the query structures as outlined in the report")
+                    sg.popup("Malformed query. Please follow the query structures as outlined in the report",
+                             keep_on_top=True)
 
                 # CASE: The query is valid and the query type is a plot query
                 elif query.split(" ")[0] == "plot":
@@ -291,12 +292,12 @@ class Gui:
         """
         # CASE: Desired pokemon is already in your party, raise popup
         if pokemon in self.party:
-            sg.popup(str(pokemon) + " is already in your party")
+            sg.popup(str(pokemon) + " is already in your party", keep_on_top=True)
             return False  # A pokemon was not added to the party
 
         # CASE:  The party is full
         elif all(item != "blank" for item in self.party):
-            sg.popup("Party size is already at the max, please remove a pokemon to add a new one")
+            sg.popup("Party size is already at the max, please remove a pokemon to add a new one", keep_on_top=True)
             return False  # A pokemon was not added to the party
 
         # CASE: The pokemon can be added to the party
