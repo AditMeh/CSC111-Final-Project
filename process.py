@@ -101,7 +101,7 @@ def create_decision_tree(df) -> DecisionTree:
     """
 
     # Create the base tree
-    base_tree = DecisionTree(category=None, is_binary_parent=False)
+    base_tree = DecisionTree(category=None, is_binary_parent=False, conversion_dictionary=None)
     stats = ["attack", "defense", "speed", "sp_defense", "sp_attack", "hp"]
 
     # Get all pokemon types
