@@ -2,7 +2,7 @@
 
 Usage:
 
-pip install -r requiremnts.txt
+pip install -r requirements.txt
 
 
 python main.py
