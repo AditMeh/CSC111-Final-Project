@@ -46,6 +46,12 @@ def check_query(q: str) -> bool:
             return True
         else:
             return False
+    elif len(q) == 3:
+        if q[0] in {'find', 'plot'} and q[1] in type_set and \
+                q[2] in stat_set:
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -128,7 +134,7 @@ class Gui:
                     sg.popup("Malformed query. Please follow the query structures as outlined in the report",
                              keep_on_top=True)
 
-                # CASE: The query is valid and the query type is a plot query
+                # CASE: The query is valid and the query type is a plox`t query
                 elif query.split(" ")[0] == "plot":
                     # Draw the graph
                     values = query.split(" ")
