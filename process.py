@@ -112,7 +112,7 @@ def create_decision_tree(df) -> DecisionTree:
     pprint.pprint(conversion_dictionary)
 
     for pokemon_type in types:
-        type_tree = DecisionTree(category=pokemon_type, is_binary_parent=False)
+        type_tree = DecisionTree(category=pokemon_type, is_binary_parent=False, conversion_dictionary=None)
         masked_df = mask_df(df, pokemon_type)
 
         for stat in stats:
