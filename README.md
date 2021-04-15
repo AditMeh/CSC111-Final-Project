@@ -9,7 +9,7 @@ python main.py
 
 
 Instructions for queries:
-s
+
 Make queries in the form of "find type degree stat"
 
 Where:
