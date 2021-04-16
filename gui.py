@@ -7,11 +7,12 @@ the pokemon recommendation GUI and processing user queries
 This file is Copyright (c) 2021 Aditya Mehrotra.
 """
 
-import PySimpleGUI as sg
 from typing import List, Any, Dict
+import PySimpleGUI as sg
+import matplotlib.pyplot as plt
+import pandas as pd
 from process import fetch_values
 from decision_tree import DecisionTree
-import matplotlib.pyplot as plt
 
 sg.theme('DarkAmber')
 
@@ -34,9 +35,9 @@ def check_query(q: str) -> bool:
     # Establishing the sets which represent the valid types, stats and degrees
     type_set = {'flying', 'ice', 'psychic', 'ghost', 'water', 'ground', 'steel',
                 'rock', 'fighting', 'fire', 'electric', 'poison', 'grass', 'bug', 'dark', 'normal', 'fairy',
-                'dragon'}
+                'dragon', 'all'}
 
-    stat_set = {'attack', 'defense', 'sp_attack', 'sp_defense', 'hp', 'speed', 'all'}
+    stat_set = {'attack', 'defense', 'sp_attack', 'sp_defense', 'hp', 'speed'}
 
     degree_set = {"high", "medium", "low"}
 
@@ -64,21 +65,28 @@ class Gui:
 
     Private Instance Attributes:
         - df: pandas dataframe after loading in our data
-        - decsion_tree: A decision tree used to process queries using the
-        evaulate method
+        - decision_tree: A decision tree used to process queries using the
+        evaluate method
         - pokemon_to_stats: A dictionary that returns a pokemon's stats given
         their name
         - query: the query (after being converted to a list) give by the user
         - previous_search: Represents the last query made by the user, empty if
         no such query exists
         - party: a list of all pokemon in the party, an element in the
-        list is "blank" if there is no pokemon at that posiiton
+        list is "blank" if there is no pokemon at that positon
 
     Representation invariants:
         - len(self.party) == 6
     """
+    party: List[str]
+    query: List[str]
+    previous_search: str
+    df: pd.DataFrame
+    decision_tree: DecisionTree
+    pokemon_to_stats: Dict[Any, Dict[str, Any]]
 
-    def __init__(self, df, decision_tree: DecisionTree, pokemon_to_stats: Dict[Any, Dict[str, Any]]) -> None:
+    def __init__(self, df: pd.DataFrame, decision_tree: DecisionTree, pokemon_to_stats: Dict[Any, Dict[str, Any]]) \
+            -> None:
         """
         This function initializes the necessary datatypes for generating and
         rendering the BST with the query functions.
@@ -163,10 +171,8 @@ class Gui:
                     info_text = self.generate_info_text(name)
 
                     # Display the pokemon
-                    sg.popup_non_blocking(info_text, grab_anywhere=True, image="generation-viii/icons/" +
-                                                                               str(self.pokemon_to_stats[name][
-                                                                                       "pokedex_id"]) +
-                                                                               ".png")
+                    sg.popup_non_blocking(info_text, grab_anywhere=True,
+                                          image="icons/" + str(self.pokemon_to_stats[name]["pokedex_id"]) + ".png")
                 # CASE: the user wants to add the pokemon to their party
                 elif values[event] == "Add to party":
                     if self.add_to_party(name):
@@ -195,10 +201,8 @@ class Gui:
 
                     info_text = self.generate_info_text(name)
 
-                    sg.popup_non_blocking(info_text, grab_anywhere=True, image="generation-viii/icons/" +
-                                                                               str(self.pokemon_to_stats[name][
-                                                                                       "pokedex_id"]) +
-                                                                               ".png")
+                    sg.popup_non_blocking(info_text, grab_anywhere=True,
+                                          image="icons/" + str(self.pokemon_to_stats[name]["pokedex_id"]) + ".png")
 
         window.close()  # Exit when we're done
 
@@ -247,7 +251,7 @@ class Gui:
 
         temp_row = []
         for i in range(len(self.query)):
-            filename = "generation-viii/icons/" + str(self.pokemon_to_stats[self.query[i]]["pokedex_id"]) \
+            filename = "icons/" + str(self.pokemon_to_stats[self.query[i]]["pokedex_id"]) \
                        + ".png"
 
             temp_row.append(sg.ButtonMenu(self.query[i], size=(10, 20), key="pokemon: " + self.query[i],
@@ -272,7 +276,7 @@ class Gui:
         party_grid = []
         for i in range(len(self.party)):
             if self.party[i] != "blank":
-                filename = "generation-viii/icons/" + str(self.pokemon_to_stats[self.party[i]]["pokedex_id"]) \
+                filename = "icons/" + str(self.pokemon_to_stats[self.party[i]]["pokedex_id"]) \
                            + ".png"
 
                 party_grid.append(sg.ButtonMenu(self.party[i], size=(10, 5), key="party: " + self.party[i],
@@ -326,12 +330,13 @@ class Gui:
             Returns the text that will be rendered in the
             "Display stats" popup
         """
-        info_text = name + ":" + "\n" + "\n" + "Attack: " + str(
-            self.pokemon_to_stats[name]["attack"]) + "\n" + "\n" + "Speed: " + str(
-            self.pokemon_to_stats[name]["speed"]) + "\n" + "\n" + "HP: " + str(
-            self.pokemon_to_stats[name]["hp"]) + "\n" + "\n" + "Special Attack: " + str(
-            self.pokemon_to_stats[name]["sp_attack"]) + "\n" + "\n" + "Special Defense: " + str(
-            self.pokemon_to_stats[name]["sp_defense"])
+        info_text = name + ":" + "\n" + "\n"
+
+        info_text += "Attack: " + str(self.pokemon_to_stats[name]["attack"]) + "\n" + "\n" + \
+                     "Speed: " + str(self.pokemon_to_stats[name]["speed"]) + "\n" + "\n" + \
+                     "HP: " + str(self.pokemon_to_stats[name]["hp"]) + "\n" + "\n" + \
+                     "Special Attack: " + str(self.pokemon_to_stats[name]["sp_attack"]) + "\n" + "\n" + \
+                     "Special Defense: " + str(self.pokemon_to_stats[name]["sp_defense"])
         return info_text
 
     def remove_from_party(self, pokemon: str) -> None:

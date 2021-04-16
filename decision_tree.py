@@ -10,8 +10,6 @@ from __future__ import annotations
 
 from typing import Union, Optional, List, Dict
 from bst import BinarySearchTree
-import pprint
-
 
 class DecisionTree:
     """

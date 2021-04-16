@@ -9,14 +9,14 @@ This file is Copyright (c) 2020 Aditya Mehrotra.
 """
 import pprint
 
+from typing import List, Any, Optional, Tuple, Dict
 import pandas as pd
 import numpy as np
 from bst import BinarySearchTree
-from typing import List, Any, Optional, Tuple, Dict
 from decision_tree import DecisionTree
 
 
-def read_data():
+def read_data() -> pd.DataFrame:
     """
     This function reads in my CSV and returns a pandas
     dataframe
@@ -28,7 +28,7 @@ def read_data():
     return df
 
 
-def find_quantiles(df) -> Dict[str, Tuple[Optional[float], Optional[float]]]:
+def find_quantiles(df: pd.DataFrame) -> Dict[str, Tuple[Optional[float], Optional[float]]]:
     """
     This function generates a dictionary which maps
     degrees into tuples in the form (Lower bound, Upper bound)
@@ -53,7 +53,7 @@ def find_quantiles(df) -> Dict[str, Tuple[Optional[float], Optional[float]]]:
     return stat_to_quantiles
 
 
-def generate_pokemon_to_stats_mapping(df) -> Dict[Any, Dict[str, Any]]:
+def generate_pokemon_to_stats_mapping(df: pd.DataFrame) -> Dict[Any, Dict[str, Any]]:
     """
     Generates a dictionary which maps a pokemon's name
     to a dictionary which maps stat names to their values.
@@ -87,7 +87,7 @@ def generate_pokemon_to_stats_mapping(df) -> Dict[Any, Dict[str, Any]]:
     return pokemon_to_stats
 
 
-def create_decision_tree(df) -> DecisionTree:
+def create_decision_tree(df: pd.DataFrame) -> DecisionTree:
     """
     Generates a decision tree using the pandas dataframe.
     The format, size, structure and purpose of this
@@ -124,7 +124,7 @@ def create_decision_tree(df) -> DecisionTree:
     return base_tree
 
 
-def mask_df(df, pokemon_type: str):
+def mask_df(df: pd.DataFrame, pokemon_type: str) -> pd.DataFrame:
     """
     This function Takes a pokemon type and returns a pandas dataframe
     with only rows that contain pokemon of the given type
@@ -143,7 +143,7 @@ def mask_df(df, pokemon_type: str):
     return df_masked
 
 
-def create_bst(names, stat_list) -> BinarySearchTree:
+def create_bst(names: np.ndarray, stat_list: np.ndarray) -> BinarySearchTree:
     """
     This function creates a BST given a numpy array of pokemon names
     and stat values.
@@ -168,10 +168,10 @@ def create_bst(names, stat_list) -> BinarySearchTree:
     return new_bst
 
 
-def fetch_values(type_filter: str, stat: str, df):
+def fetch_values(type_filter: str, stat: str, df: pd.DataFrame) -> pd.DataFrame:
     """
     This function takes in a pokemon type, stat and pandas dataframe
-    then returns a numpy array containing the specific stat values
+    then returns a dataframe containing the specific stat values
     of all pokemon of the given type.
 
     :param type_filter:

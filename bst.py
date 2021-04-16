@@ -32,6 +32,11 @@ class BinarySearchTree:
         - self.pokemon != self._right.pokemon
         - self.pokemon != self._left.pokemon
     """
+    _root: Optional[Any]
+    pokemon: Optional[str]
+    _left: Optional[Any]
+    _right: Optional[Any]
+
     def __init__(self, root: Optional[Any], pokemon: Optional[str]) -> None:
         """Initialize a new BST containing only the given root value
         and a pokemon.
