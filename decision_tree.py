@@ -56,7 +56,10 @@ class DecisionTree:
 
     def evaluate(self, query: List[str]) -> List[str]:
         """
-        Evaluates this decision tree on a given query
+        Evaluates this decision tree on a given query. If the decision
+        tree has a BST child, then the evaluate method will call the
+        BST find_nodes_with_constraints function. But if there is not BST
+        child, then it will recurse onto a decision tree.
 
         :param query:
             A list of strings, where each string is a keyword.

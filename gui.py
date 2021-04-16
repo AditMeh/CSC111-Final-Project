@@ -73,7 +73,7 @@ class Gui:
         - previous_search: Represents the last query made by the user, empty if
         no such query exists
         - party: a list of all pokemon in the party, an element in the
-        list is "blank" if there is no pokemon at that positon
+        list is "blank" if there is no pokemon at that position
 
     Representation invariants:
         - len(self.party) == 6
@@ -123,7 +123,7 @@ class Gui:
 
         while True:  # The Event Loop
             event, values = window.read()
-            print(event, values)
+            # print(event, values)
 
             # Loop terminates when the user closes the window
             if event == sg.WIN_CLOSED:
@@ -142,7 +142,7 @@ class Gui:
                     sg.popup("Malformed query. Please follow the query structures as outlined in the report",
                              keep_on_top=True)
 
-                # CASE: The query is valid and the query type is a plox`t query
+                # CASE: The query is valid and the query type is a plot query
                 elif query.split(" ")[0] == "plot":
                     # Draw the graph
                     values = query.split(" ")
@@ -166,8 +166,6 @@ class Gui:
 
                 # CASE: The user wants the stats of the clicked pokemon
                 if values[event] == "Display Stats":
-                    print(values[event])
-
                     info_text = self.generate_info_text(name)
 
                     # Display the pokemon
@@ -208,7 +206,7 @@ class Gui:
 
     def generate_layout(self) -> List[Any]:
         """
-        Generates a layout, which will be used to re-render the GUI
+        Generates a layout, which will be used to render the GUI.
 
         :return:
             A widget layout used to render the GUI
@@ -293,6 +291,9 @@ class Gui:
         """
         Adds a pokemon to the user's party
 
+        Preconditions:
+            - pokemon is a valid pokemon name
+
         :param pokemon:
             A string, which corresponds to the name of the pokemon
             being added to the party
@@ -323,6 +324,9 @@ class Gui:
         "Display stats" popup for a given pokemon. The string
         contains the stats and name of the pokemon
 
+        Preconditions:
+            - name is a valid pokemon name
+
         :param name:
             The name of the pokemon that the info string
             will be made for
@@ -342,6 +346,9 @@ class Gui:
     def remove_from_party(self, pokemon: str) -> None:
         """
         Removes a pokemon from the party
+
+        Preconditions:
+            - name is a valid pokemon name
 
         :param pokemon:
             The pokemon to be removed
@@ -390,7 +397,7 @@ class Gui:
         # Generate the figure
         plt.figure(num='Query: ' + self.previous_search)
         lst = fetch_values(typing, stat, self.df)
-        plt.hist(lst, density=False, bins=50)
+        plt.hist(lst, density=False, bins=30)
         plt.title("A histogram of the " + stat + " of " + typing + " pokemon")
         plt.xlabel(stat + " values")
         plt.ylabel("Count")

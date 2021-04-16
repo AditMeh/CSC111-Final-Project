@@ -7,9 +7,8 @@ from the dataset and generating trees and dictionaries.
 ===============================
 This file is Copyright (c) 2020 Aditya Mehrotra.
 """
-import pprint
 
-from typing import List, Any, Optional, Tuple, Dict
+from typing import Any, Optional, Tuple, Dict
 import pandas as pd
 import numpy as np
 from bst import BinarySearchTree
@@ -38,7 +37,7 @@ def find_quantiles(df: pd.DataFrame) -> Dict[str, Tuple[Optional[float], Optiona
     :param df:
         a pandas dataframe
     :return:
-        A dictionary degree to contraints mapping
+        A degree to constraints mapping
     """
     stat_to_quantiles = {}
     stats = ["attack", "defense", "speed", "sp_defense", "sp_attack", "hp"]
@@ -109,7 +108,6 @@ def create_decision_tree(df: pd.DataFrame) -> DecisionTree:
 
     # Generate conversion dictionary
     conversion_dictionary = find_quantiles(df)
-    pprint.pprint(conversion_dictionary)
 
     for pokemon_type in types:
         type_tree = DecisionTree(category=pokemon_type, is_binary_parent=False, conversion_dictionary=None)
@@ -126,8 +124,8 @@ def create_decision_tree(df: pd.DataFrame) -> DecisionTree:
 
 def mask_df(df: pd.DataFrame, pokemon_type: str) -> pd.DataFrame:
     """
-    This function Takes a pokemon type and returns a pandas dataframe
-    with only rows that contain pokemon of the given type
+    This function takes a pokemon type and returns a pandas dataframe
+    with rows that only contain pokemon of the given type
 
     :param df:
         A pandas dataframe

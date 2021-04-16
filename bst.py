@@ -61,7 +61,7 @@ class BinarySearchTree:
 
     def insert(self, item: Any, pokemon: str) -> None:
         """Insert the given pokemon and stat
-        from the pokemon nto this tree.
+        from the pokemon into this tree.
 
         Do not change positions of any other values.
 
@@ -109,7 +109,7 @@ class BinarySearchTree:
         the desired effect in this case.
 
         In the second case, where there is no upper bound, we replace the upper
-        bound with 500. Since eawch node has a pokemon stat value, we know all pokemon
+        bound with 500. Since each node has a pokemon stat value, we know all pokemon
         will have a stat value less than 500, this is because it isn't possible
         for a pokemon to have a stat of 500. Therefore, all nodes
         are less than 500. Hence, this function will return all nodes with
