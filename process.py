@@ -47,7 +47,7 @@ def find_quantiles(df: pd.DataFrame) -> Dict[str, Tuple[Optional[float], Optiona
         stat_column = df.loc[:, stat].to_numpy()
 
         stat_to_quantiles["low " + stat] = (None, np.percentile(stat_column, 25))
-        stat_to_quantiles["medium " + stat] = (np.percentile(stat_column, 50), np.percentile(stat_column, 75))
+        stat_to_quantiles["medium " + stat] = (np.percentile(stat_column, 25), np.percentile(stat_column, 75))
         stat_to_quantiles["high " + stat] = (np.percentile(stat_column, 75), None)
 
     return stat_to_quantiles

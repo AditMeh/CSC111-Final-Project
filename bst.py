@@ -92,7 +92,7 @@ class BinarySearchTree:
         else:
             self._right.insert(item, pokemon)
 
-    def find_greater_or_equal_nodes(self, threshold: Tuple[Optional[float], Optional[float]]) -> List[str]:
+    def find_nodes_with_constraints(self, threshold: Tuple[Optional[float], Optional[float]]) -> List[str]:
         """
         Given a threshold in the form of (Lower bound, Upper bound), this function finds
         all nodes in the BST which have values that are in between the upper and lower bounds
@@ -129,12 +129,12 @@ class BinarySearchTree:
         right_threshold = 500 if threshold[1] is None else threshold[1]
 
         if not self._left.is_empty() and self._root >= left_threshold:
-            lst.extend(self._left.find_greater_or_equal_nodes(threshold))
+            lst.extend(self._left.find_nodes_with_constraints(threshold))
 
         if left_threshold <= self._root <= right_threshold:
             lst.extend([self.pokemon])
 
         if not self._right.is_empty() and self._root <= right_threshold:
-            lst.extend(self._right.find_greater_or_equal_nodes(threshold))
+            lst.extend(self._right.find_nodes_with_constraints(threshold))
 
         return lst
