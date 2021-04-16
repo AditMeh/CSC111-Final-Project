@@ -36,7 +36,7 @@ def check_query(q: str) -> bool:
                 'rock', 'fighting', 'fire', 'electric', 'poison', 'grass', 'bug', 'dark', 'normal', 'fairy',
                 'dragon'}
 
-    stat_set = {'attack', 'defense', 'sp_attack', 'sp_defense', 'hp', 'speed'}
+    stat_set = {'attack', 'defense', 'sp_attack', 'sp_defense', 'hp', 'speed', 'all'}
 
     degree_set = {"high", "medium", "low"}
 
